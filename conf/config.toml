@@ -1,0 +1,12 @@
+[app]
+    host            = "127.0.0.1:8002"
+
+[configDB]
+    host            = "localhost"
+    port            = 26257
+    user            = "root"
+    password        = ""
+    dbname          = "bank"
+
+[api]
+    secret_key      = ""
