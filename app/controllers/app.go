@@ -1,6 +1,9 @@
 package controllers
 
 import (
+	"go-reco/app/configs"
+	"go-reco/app/models"
+
 	"github.com/revel/revel"
 )
 
@@ -15,9 +18,21 @@ type Beer struct {
 	Brewery string
 }
 
-func (c App) Index() revel.Result {
+func init() {
+	configs.StartViper()
+	configs.Connect()
+}
 
+func (c App) Index() revel.Result {
+	stud := models.StudentModels{}
+	stud.GetStudent()
 	return c.Render()
+}
+
+func (c App) InsertStudent() revel.Result {
+	stud := models.StudentModels{}
+	stud.GetStudent()
+	return c.RenderJSON("opi")
 }
 
 func (c App) Try() revel.Result {
@@ -26,6 +41,7 @@ func (c App) Try() revel.Result {
 		Beer{2, "Cocoa Psycho", "Porter", "BrewDog"},
 		Beer{3, "American Dream", "Lager", "Mikkeller"},
 	}
+
 	// try, err := json.Marshal(data)
 	// if err != nil {
 	// 	log.Println("error")
