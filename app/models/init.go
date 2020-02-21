@@ -5,9 +5,9 @@ import "github.com/jinzhu/gorm"
 type (
 	Student struct {
 		Name    string `json:"name"`
-		Class   string `json:"class"`
+		Class   int    `json:"class"`
 		Address string `json:"address"`
-		Age     string `json:"age"`
+		Age     int    `json:"age"`
 		gorm.Model
 	}
 )

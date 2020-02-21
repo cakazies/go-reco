@@ -1,5 +1,8 @@
-
 module:testrunner
 
-GET     /                                       App.Index
-GET     /try                                    App.Try
+GET         /health                                     App.Health
+GET         /students                                   App.GetStudents
+GET         /student/:id                                App.GetStudent
+POST        /student                                    App.InsertStudent
+POST        /student/:id                                App.UpdateStudent
+DELETE      /student/:id                                App.DeleteStudent

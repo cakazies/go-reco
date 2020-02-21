@@ -102,18 +102,46 @@ type tApp struct {}
 var App tApp
 
 
-func (_ tApp) Index(
+func (_ tApp) Health(
 		) string {
 	args := make(map[string]string)
 	
-	return revel.MainRouter.Reverse("App.Index", args).URL
+	return revel.MainRouter.Reverse("App.Health", args).URL
 }
 
-func (_ tApp) Try(
+func (_ tApp) GetStudents(
 		) string {
 	args := make(map[string]string)
 	
-	return revel.MainRouter.Reverse("App.Try", args).URL
+	return revel.MainRouter.Reverse("App.GetStudents", args).URL
+}
+
+func (_ tApp) InsertStudent(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("App.InsertStudent", args).URL
+}
+
+func (_ tApp) GetStudent(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("App.GetStudent", args).URL
+}
+
+func (_ tApp) UpdateStudent(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("App.UpdateStudent", args).URL
+}
+
+func (_ tApp) DeleteStudent(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("App.DeleteStudent", args).URL
 }
 
 
