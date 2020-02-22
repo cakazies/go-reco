@@ -61,7 +61,7 @@ func (c App) InsertStudent() revel.Result {
 
 func (c App) GetStudent() revel.Result {
 	stud := models.Student{}
-	id, err := strconv.ParseUint(c.Params.Get("id"), 10, 32)
+	id, err := strconv.Atoi(c.Params.Get("id"))
 	if err != nil {
 		result := response("param id doesn't exist", "error get student", "fail")
 		c.Response.SetStatus(http.StatusNotFound)
@@ -93,21 +93,19 @@ func (c App) GetStudent() revel.Result {
 }
 
 func (c App) UpdateStudent() revel.Result {
-	id := c.Params.Get("id")
-	// stud := models.StudentModels{}
+	id, err := strconv.Atoi(c.Params.Get("id"))
 	data := models.Student{}
-
-	c.Params.BindJSON(&data)
-
-	if id == "" {
-		result := response("param id doesn't exist", "error id", "fail")
+	if err != nil {
+		result := response("param id doesn't exist", "error get student", "fail")
 		c.Response.SetStatus(http.StatusNotFound)
 		c.Response.ContentType = "application/json"
 		return c.RenderJSON(result)
 	}
+	c.Params.BindJSON(&data)
+	data.ID = uint(id)
 
 	revel.AppLog.Debug("print student", data)
-	err := data.UpdateStudent(id)
+	err = data.UpdateStudent()
 	if err != nil {
 		revel.AppLog.Debug("error insert student", err)
 		result := response(err, "error get student", "fail")
@@ -123,7 +121,34 @@ func (c App) UpdateStudent() revel.Result {
 }
 
 func (c App) DeleteStudent() revel.Result {
-	id := c.Params.Get("id")
+	id, err := strconv.Atoi(c.Params.Get("id"))
+	data := models.Student{}
+	if err != nil {
+		result := response("param id doesn't exist", "error id", "fail")
+		c.Response.SetStatus(http.StatusNotFound)
+		c.Response.ContentType = "application/json"
+		return c.RenderJSON(result)
+	}
 
-	return c.RenderJSON(id)
+	data.ID = uint(id)
+	err = data.DeleteStudent()
+	if err != nil {
+		if err.Error() == "record not found" {
+			result := response(err.Error(), "data not found", "fail")
+			c.Response.ContentType = "application/json"
+			c.Response.SetStatus(http.StatusNotFound)
+			return c.RenderJSON(result)
+		} else {
+			revel.AppLog.Debug("error insert student", err)
+			result := response(err.Error(), "error get student", "fail")
+			c.Response.ContentType = "application/json"
+			c.Response.SetStatus(http.StatusInternalServerError)
+			return c.RenderJSON(result)
+		}
+	}
+
+	c.Response.SetStatus(http.StatusCreated)
+	c.Response.ContentType = "application/json"
+	result := response(data, "update data successfull", "success")
+	return c.RenderJSON(result)
 }
