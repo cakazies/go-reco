@@ -23,9 +23,14 @@ func (stud *Student) Insert() error {
 }
 
 // UpdateApprov function
-func (stud *Student) UpdateStudent(id string) error {
+func (stud *Student) UpdateStudent() error {
 	err := configs.GetDB.Model(&stud).
-		Where("id = ?", id).
+		Where("id = ?", stud.ID).
 		Updates(&stud).Error
+	return err
+}
+
+func (stud *Student) DeleteStudent() error {
+	err := configs.GetDB.Delete(&stud).Error
 	return err
 }
